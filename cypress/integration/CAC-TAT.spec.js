@@ -13,8 +13,11 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.title().should('be.equal','Central de Atendimento ao Cliente TAT')
     })
 
-    it('verifica preenchimento e envio do formulário', function(){
+    it.only('verifica preenchimento e envio do formulário', function(){
         const longTxt = 'orem ipsum dolor sit amet, consectetur adipiscing elit. Sed a massa ut libero congue blandit. Donec ultrices vitae magna a varius. Suspendisse mattis massa sapien,'
+        
+        cy.clock();
+
         cy.get('#firstName').type('teste')
         cy.get('#lastName').type('testando')
         cy.get('#email').type('teste@teste.com')
@@ -22,6 +25,9 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.contains('button', 'Enviar').click()
 
         cy.get('.success').should('be.visible')
+
+        cy.tick(3000)
+        cy.get('.success').should('not.be.visible')
     })
 
     it('exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', function(){
@@ -139,7 +145,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#privacy a').should('have.attr','target','_blank')
     })
 
-    it.only('acessa a página da política de privacidade removendo o target e então clicando no link', function(){
+    it('acessa a página da política de privacidade removendo o target e então clicando no link', function(){
         cy.get('#privacy a')
             .invoke('removeAttr','target')
             .click()  
